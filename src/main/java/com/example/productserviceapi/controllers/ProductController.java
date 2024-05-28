@@ -2,9 +2,12 @@ package com.example.productserviceapi.controllers;
 
 import com.example.productserviceapi.models.Product;
 import com.example.productserviceapi.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -22,21 +25,21 @@ public class ProductController {
     }
 
     @GetMapping
-    public ArrayList<Product> getAllProducts(@PathVariable long id) {
-        return new ArrayList<Product>();
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product prod) {
-        return prod;
+    public ResponseEntity<Product> createProduct(@RequestBody Product prod) {
+        return new ResponseEntity<>(productService.createProduct(prod), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public Product replaceProduct(@PathVariable long id,@RequestBody Product prod) {
-        return prod;
+        return productService.replaceProduct(id, prod);
     }
     @PatchMapping("/{id}")
     public Product updateProduct(@PathVariable long id,@RequestBody Product prod) {
-        return prod;
+        return productService.updateProduct(id, prod);
     }
 
 }
