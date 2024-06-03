@@ -1,5 +1,6 @@
 package com.example.productserviceapi.controllers;
 
+import com.example.productserviceapi.exceptions.ProductLimitExceedException;
 import com.example.productserviceapi.models.Product;
 import com.example.productserviceapi.services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable long id) {
+    public Product getProductById(@PathVariable long id) throws ProductLimitExceedException {
+        if(id<=0){
+            throw new RuntimeException("Product id cannot be less than 0");
+        }
+        if(id>=30){
+            throw new ProductLimitExceedException("Product limit exceeded");
+        }
+
         return productService.getPRoductById(id);
     }
 
