@@ -19,7 +19,7 @@ public class FakeProductService implements ProductService{
     }
 
     @Override
-    public Product getPRoductById(long id) {
+    public Product getProductById(Long id) {
         FakeStoreProduct fakeStoreProduct = this.restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProduct.class);
         return convertFakeStoreProductToProduct(fakeStoreProduct);
     }
@@ -49,12 +49,12 @@ public class FakeProductService implements ProductService{
     }
 
     @Override
-    public Product deleteProduct(long id) {
+    public Product deleteProduct(Long id) {
         return null;
     }
 
     @Override
-    public Product replaceProduct(long id, Product product) {
+    public Product replaceProduct(Long id, Product product) {
         FakeStoreProduct fakeStoreProductDto = convertProductToFakeStoreProduct(product);
         restTemplate.put("https://fakestoreapi.com/products/" + id,
                 fakeStoreProductDto, FakeStoreProduct.class);

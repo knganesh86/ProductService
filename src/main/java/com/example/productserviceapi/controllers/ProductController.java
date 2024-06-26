@@ -29,7 +29,7 @@ public class ProductController {
             throw new ProductLimitExceedException("Product limit exceeded");
         }
 
-        return productService.getPRoductById(id);
+        return productService.getProductById(id);
     }
 
     @GetMapping
@@ -49,5 +49,8 @@ public class ProductController {
     public Product updateProduct(@PathVariable long id,@RequestBody Product prod) {
         return productService.updateProduct(id, prod);
     }
-
+    @DeleteMapping("/{id}")
+    public Product replaceProduct(@PathVariable long id) {
+        return productService.deleteProduct(id);
+    }
 }
