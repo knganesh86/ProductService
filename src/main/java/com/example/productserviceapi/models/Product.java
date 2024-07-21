@@ -13,4 +13,5 @@ public class Product extends BaseModel {
     private String description;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Category category;
+    private boolean isDeleted;
 }

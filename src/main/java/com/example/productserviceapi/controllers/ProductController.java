@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable long id) throws ProductLimitExceedException {
+    public ResponseEntity<Product> getProductById(@PathVariable long id) throws ProductLimitExceedException {
         if(id<=0){
             throw new RuntimeException("Product id cannot be less than 0");
         }
@@ -29,7 +29,7 @@ public class ProductController {
             throw new ProductLimitExceedException("Product limit exceeded");
         }
 
-        return productService.getProductById(id);
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
     @GetMapping
