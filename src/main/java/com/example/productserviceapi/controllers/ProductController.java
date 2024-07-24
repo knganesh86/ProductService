@@ -3,6 +3,7 @@ package com.example.productserviceapi.controllers;
 import com.example.productserviceapi.exceptions.ProductLimitExceedException;
 import com.example.productserviceapi.models.Product;
 import com.example.productserviceapi.services.ProductService;
+import com.example.productserviceapi.services.TokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,16 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+    private TokenService tokenService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, TokenService tokenService) {
         this.productService = productService;
+        this.tokenService = tokenService;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable long id) throws ProductLimitExceedException {
+
         if(id<=0){
             throw new RuntimeException("Product id cannot be less than 0");
         }
@@ -33,8 +37,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader String token) {
+        if(!tokenService.validateToken(token)){
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @PostMapping
