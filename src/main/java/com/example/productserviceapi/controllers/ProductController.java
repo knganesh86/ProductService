@@ -37,10 +37,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader String token) {
-        if(!tokenService.validateToken(token)){
-            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<List<Product>> getAllProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
